@@ -14,4 +14,5 @@ func _on_body_entered(body):
 	else:
 		print("Dealt ", damage_dealt, " damage to ", body)
 		var knockback_dir = Vector2(body.position - position).normalized()
-		body.take_damage(damage_dealt, knockback_dir, knockback_strength)
+		if !body.invulnerable:
+			body.take_damage(damage_dealt, knockback_dir, knockback_strength)

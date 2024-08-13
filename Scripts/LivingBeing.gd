@@ -9,6 +9,7 @@ extends CharacterBody2D
 
 var knockback: Vector2 = Vector2.ZERO
 var being_knocked_back := false
+var invulnerable := false
 
 var hp: int:
 	get:

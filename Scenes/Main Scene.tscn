@@ -55,6 +55,13 @@ sources/3 = SubResource("TileSetAtlasSource_hrvqe")
 
 [node name="Player" parent="." instance=ExtResource("1_2avrw")]
 position = Vector2(-2, -70)
+jump_velocity = -500.0
+coyote_time_duration = 0.15
+dash_velocity = 900.0
+dash_cooldown = 0.8
+footstep_delay = 0.1
+max_hp = 100
+current_hp = 100
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(1, 0)
@@ -78,4 +85,4 @@ offset = Vector2(0, -20)
 limit_left = -269990
 
 [node name="Damage Zone" parent="." instance=ExtResource("5_e1g5g")]
-position = Vector2(316, 0)
+position = Vector2(306, 0)

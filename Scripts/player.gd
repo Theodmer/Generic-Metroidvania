@@ -49,7 +49,7 @@ func apply_gravity(delta: float):
 
 
 func give_velocity():
-	if direction:
+	if direction and can_move:
 		velocity.x = direction * run_speed
 	else:
 		velocity.x = move_toward(velocity.x, 0, run_speed)
@@ -77,7 +77,7 @@ func handle_movement(delta: float):
 	handle_movement_input()
 	if is_dashing:
 		dash(delta)
-	elif can_move and !is_dashing:
+	elif !is_dashing:
 		give_velocity()
 	elif !can_move:
 		velocity = Vector2(0,0)
@@ -154,10 +154,12 @@ func start_dashing():
 	await get_tree().create_timer(pre_dash_duration).timeout
 	
 	# dash
+	Engine.physics_ticks_per_second = 200
 	is_dashing = true
 	await get_tree().create_timer(dash_duration).timeout
 	
 	# post dash
+	Engine.physics_ticks_per_second = 60
 	is_dashing = false
 	can_move = true
 
@@ -170,8 +172,33 @@ func handle_dash_cooldown():
 
 func dash(delta: float):
 	var dash_speed = 1 if facing_right else -1
-	dash_speed *= dash_velocity * 100 * delta
+	dash_speed *= dash_velocity * 200 * delta
 	velocity = Vector2(dash_speed, 0)
+
+
+func grace_period():
+	invulnerable = true
+	for i in 3:
+		animated_sprite.visible = true
+		await get_tree().create_timer(0.2).timeout
+		animated_sprite.visible = false
+		await get_tree().create_timer(0.2).timeout
+	animated_sprite.visible = true
+	invulnerable = false
+
+
+func take_knockback(knockback_direction: Vector2, knockback_strength: float):
+	velocity = Vector2.ZERO
+	super(knockback_direction, knockback_strength)
+	is_dashing = false
+
+
+func take_damage(damage_taken: int, knockback_direction: Vector2, knockback_strength: float):
+	if invulnerable:
+		return
+	grace_period()
+	super(damage_taken, knockback_direction, knockback_strength)
+
 
 func die():
 	super()	

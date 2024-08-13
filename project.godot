@@ -13,7 +13,6 @@ config_version=5
 config/name="Generic Metroidvania"
 run/main_scene="res://Scenes/Main Scene.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.svg"
 
 [display]
 
@@ -51,6 +50,9 @@ Dash={
 [physics]
 
 2d/default_gravity=1500.0
+common/size/viewport_height=360
+common/size/viewport_width=640
+common/default_gravity=1500.0
 
 [rendering]
 
