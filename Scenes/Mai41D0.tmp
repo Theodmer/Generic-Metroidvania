@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://bgutjv35ox7vv"]
+
+[ext_resource type="PackedScene" uid="uid://codicqyf1siu0" path="res://Scenes/player.tscn" id="1_2avrw"]
+[ext_resource type="Texture2D" uid="uid://dski5ogg1p4k5" path="res://Assets/Sprites/Tile.png" id="2_eka2h"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a1mjw"]
+texture = ExtResource("2_eka2h")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+1:1/0 = 0
+1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_0/angular_velocity = 0.0
+
+[sub_resource type="TileSet" id="TileSet_sc16r"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_a1mjw")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_2avrw")]
+position = Vector2(-2, -70)
+run_speed = null
+jump_velocity = null
+dash_velocity = null
+
+[node name="TileMap" type="TileMap" parent="."]
+position = Vector2(1, 0)
+tile_set = SubResource("TileSet_sc16r")
+rendering_quadrant_size = 32
+format = 2
+layer_0/tile_data = PackedInt32Array(65529, 0, 0, 65530, 0, 0, 65531, 0, 0, 65532, 0, 0, 65533, 0, 0, 65534, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 131065, 0, 0, 131066, 0, 0, 131067, 0, 0, 131068, 0, 0, 131069, 0, 0, 131070, 0, 0, 131071, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 65543, 0, 0, 65544, 0, 0, 65545, 0, 0, 65546, 0, 0, -7, 0, 0, -65543, 0, 0, -131079, 0, 0, -196615, 0, 0, -262151, 0, 0, -65534, 0, 0, -65533, 0, 0, -65532, 0, 0, -65531, 0, 0, -131069, 0, 0, -131068, 0, 0, -131067, 0, 0, -196603, 0, 0, -196604, 0, 0, -262139, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 16, 0, 0, 17, 0, 0, 18, 0, 0, 19, 0, 0, 20, 0, 0, 21, 0, 0, 22, 0, 0, 23, 0, 0, 24, 0, 0, 25, 0, 0, 26, 0, 0, 27, 0, 0, 28, 0, 0, 29, 0, 0, 30, 0, 0, 31, 0, 0, 32, 0, 0, 33, 0, 0, 34, 0, 0, 35, 0, 0, 36, 0, 0, 37, 0, 0, 38, 0, 0, 39, 0, 0, 40, 0, 0, 65575, 0, 0, 65574, 0, 0, 65573, 0, 0, 65572, 0, 0, 65571, 0, 0, 65570, 0, 0, 65569, 0, 0, 65568, 0, 0, 65567, 0, 0, 65566, 0, 0, 65565, 0, 0, 65564, 0, 0, 65563, 0, 0, 65562, 0, 0, 65561, 0, 0, 65560, 0, 0, 65559, 0, 0, 65558, 0, 0, 65557, 0, 0, 65556, 0, 0, 65555, 0, 0, 65554, 0, 0, 65553, 0, 0, 65552, 0, 0, 65551, 0, 0, 65550, 0, 0, 65549, 0, 0, 65548, 0, 0, 65547, 0, 0, 65576, 0, 0, -327670, 0, 0, -327669, 0, 0, -327668, 0, 0, -393191, 0, 0, -327655, 0, 0, -262119, 0, 0, -196583, 0, 0, -131047, 0, 0, -65511, 0, 0, -393190, 0, 0, -327654, 0, 0, -262118, 0, 0, -196582, 0, 0, -131046, 0, 0, -65510, 0, 0, -655320, 0, 0, -589784, 0, 0, -524248, 0, 0, -458712, 0, 0, -393176, 0, 0, -327640, 0, 0, -262104, 0, 0, -196568, 0, 0, -131032, 0, 0, -65496, 0, 0, -655367, 0, 0, -589831, 0, 0, -524295, 0, 0, -458759, 0, 0, -393223, 0, 0, -327687, 0, 0)

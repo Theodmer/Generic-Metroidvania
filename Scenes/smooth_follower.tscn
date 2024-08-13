@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8m6o6umf3a5t"]
+
+[ext_resource type="Script" path="res://Scripts/Smooth Follower.gd" id="1_8uvts"]
+
+[node name="Smooth Follower" type="Node2D"]
+script = ExtResource("1_8uvts")

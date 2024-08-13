@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://kc1b0v8avtga"]
+
+[ext_resource type="PackedScene" uid="uid://blygdu3lfraoh" path="res://Scenes/damage_zone.tscn" id="1_678ex"]
+[ext_resource type="Texture2D" uid="uid://cgpxylvn3wc8m" path="res://Assets/Sprites/Thorns.png" id="2_aj8dn"]
+
+[node name="Damage Zone" instance=ExtResource("1_678ex")]
+damage_dealt = 20
+knockback_strength = 2.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="0"]
+position = Vector2(0, -16)
+texture = ExtResource("2_aj8dn")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." index="1"]
+position = Vector2(0.499999, -11)
+scale = Vector2(1.55, 1.1)
+polygon = PackedVector2Array(10, -0.909091, 4.19355, -1.81818, -0.967741, -10, -6.12903, -5.45455, -10, 0, -8.70968, 10, 7.41935, 10)

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b8lfponwxu2ta"
+path="res://.godot/imported/Doublejump SFX.wav-c698a5323425c299fc75b13fc8c3e53e.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/Doublejump SFX.wav"
+dest_files=["res://.godot/imported/Doublejump SFX.wav-c698a5323425c299fc75b13fc8c3e53e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
