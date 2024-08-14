@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://cunxrmpiucsqy"]
+
+[ext_resource type="Script" path="res://Music Manager.gd" id="1_oksqg"]
+[ext_resource type="AudioStream" uid="uid://cmpofh60g7gjx" path="res://Assets/Music/Night Ambient 1.mp3" id="2_7kjc2"]
+[ext_resource type="AudioStream" uid="uid://c11443blsaobf" path="res://Assets/Music/Ambient 6.mp3" id="3_larlx"]
+
+[node name="Music Manager" type="Node2D"]
+script = ExtResource("1_oksqg")
+
+[node name="Night Ambient 1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_7kjc2")
+bus = &"Music"
+
+[node name="Night Ambient 2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_larlx")
+bus = &"Music"
+
+[node name="Night Ambient 3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_larlx")
+bus = &"Music"
+
+[connection signal="finished" from="Night Ambient 1" to="." method="_on_night_ambient_1_finished"]
+[connection signal="finished" from="Night Ambient 2" to="." method="_on_night_ambient_2_finished"]
+[connection signal="finished" from="Night Ambient 3" to="." method="_on_night_ambient_3_finished"]

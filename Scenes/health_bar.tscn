@@ -1,0 +1,46 @@
+[gd_scene load_steps=9 format=3 uid="uid://cd6duok5yr2ab"]
+
+[ext_resource type="Texture2D" uid="uid://dyc37trpoot48" path="res://Assets/Sprites/UI/Health Bar BG.png" id="1_vudop"]
+[ext_resource type="Texture2D" uid="uid://bbjqdlfboeskn" path="res://Assets/Sprites/UI/Health Bar Health.png" id="2_1bjyx"]
+[ext_resource type="Script" path="res://Health Bar.gd" id="3_gelw0"]
+[ext_resource type="Texture2D" uid="uid://dy0hvasywmj7" path="res://Assets/Sprites/UI/Health Bar Damage.png" id="4_auw65"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gil78"]
+texture = ExtResource("1_vudop")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4b4sn"]
+texture = ExtResource("2_1bjyx")
+axis_stretch_horizontal = 1
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3ep64"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3wfyo"]
+texture = ExtResource("4_auw65")
+axis_stretch_horizontal = 1
+
+[node name="Health Bar" type="ProgressBar"]
+z_index = 1
+offset_right = 134.0
+offset_bottom = 10.0
+theme_override_styles/background = SubResource("StyleBoxTexture_gil78")
+theme_override_styles/fill = SubResource("StyleBoxTexture_4b4sn")
+show_percentage = false
+script = ExtResource("3_gelw0")
+
+[node name="Damage Bar" type="ProgressBar" parent="."]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxEmpty_3ep64")
+theme_override_styles/fill = SubResource("StyleBoxTexture_3wfyo")
+show_percentage = false
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

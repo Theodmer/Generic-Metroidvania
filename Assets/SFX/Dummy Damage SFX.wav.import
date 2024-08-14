@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://camwkid63tne1"
+path="res://.godot/imported/Dummy Damage SFX.wav-2cc2c49ef2071c6d8c2962fc433432d0.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/Dummy Damage SFX.wav"
+dest_files=["res://.godot/imported/Dummy Damage SFX.wav-2cc2c49ef2071c6d8c2962fc433432d0.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

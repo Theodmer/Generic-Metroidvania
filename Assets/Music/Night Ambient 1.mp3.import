@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cmpofh60g7gjx"
+path="res://.godot/imported/Night Ambient 1.mp3-eba7f4379e56ca4a50f96ab207323253.mp3str"
+
+[deps]
+
+source_file="res://Assets/Music/Night Ambient 1.mp3"
+dest_files=["res://.godot/imported/Night Ambient 1.mp3-eba7f4379e56ca4a50f96ab207323253.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

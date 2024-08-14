@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b0jw8fimh2k01"
+path="res://.godot/imported/Attack 2 SFX.wav-f21b0109bdb3b78ca9500da784b0a09a.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/Attack 2 SFX.wav"
+dest_files=["res://.godot/imported/Attack 2 SFX.wav-f21b0109bdb3b78ca9500da784b0a09a.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
