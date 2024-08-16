@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dlb6dhnkr548r"
+path="res://.godot/imported/Skeleton Stab.wav-89e84f452a9677959beeb55847c21ff3.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/Enemies/Skeleton Stab.wav"
+dest_files=["res://.godot/imported/Skeleton Stab.wav-89e84f452a9677959beeb55847c21ff3.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -10,8 +10,11 @@ extends LivingBeing
 @export var dash_cooldown: float = 0.8
 
 @export_group("Combat")
-@export var upgraded := false
 @export var second_attack_buffered := false
+@export var attack_1_damage : float = 10.0
+@export var attack_1_knockback : float = 1.0
+@export var attack_2_damage : float = 15.0
+@export var attack_2_knockback : float = 2.0
 
 @export_group("UI")
 @export var healthbar: ProgressBar
@@ -24,6 +27,7 @@ extends LivingBeing
 @export var jump_sfx: AudioStreamPlayer2D
 @export var upgrade_sfx: AudioStreamPlayer2D
 @export var footstep_sfx: AudioStreamPlayer2D
+@export var damage_dealt_sfx: AudioStreamPlayer2D
 @export var footstep_timer: Timer
 
 var direction: int = 0
@@ -58,10 +62,11 @@ var current_animation_state: AnimationStates = AnimationStates.Idle
 
 # SCENES
 const HIT_PARTICLES = preload("res://Scenes/Combat/hit_particles.tscn")
-const ATTACK_1 = preload("res://Scenes/Attack 1 VFX.tscn")
-const ATTACK_2 = preload("res://Scenes/Attack 2 VFX.tscn")
+const ATTACK_1 = preload("res://Scenes/VFX/Attack 1 VFX.tscn")
+const ATTACK_2 = preload("res://Scenes/VFX/Attack 2 VFX.tscn")
 
 func _ready():
+	can_attack = GameManager.upgraded
 	await get_tree().create_timer(0.3).timeout
 	healthbar.init_health(max_hp)
 
@@ -78,7 +83,7 @@ func _physics_process(delta):
 	handle_animations()
 
 func apply_gravity(delta: float):
-	if not is_on_floor():
+	if not is_on_floor() and can_move:
 		velocity.y += gravity * delta
 
 
@@ -114,19 +119,18 @@ func handle_attack_input():
 	if Input.is_action_just_pressed("Attack"):
 		if (current_animation_state == AnimationStates.Idle or 
 					current_animation_state == AnimationStates.Running):
-			can_move = false
-			can_change_animations = false
-			current_animation_state = AnimationStates.Attack1
-			create_scene_at_pos(ATTACK_1, Vector2(position.x, position.y - 33))
-			attack_1_collision.disabled = false
+			start_attack_1()
 		elif current_animation_state == AnimationStates.Attack1:
 			second_attack_buffered = true
+		elif !is_on_floor():
+			start_attack_2()
 
 
 func handle_movement(delta: float):
 	buffer_dash(0.3)
 	
 	if !can_move:
+		velocity = Vector2.ZERO
 		return
 		
 	handle_movement_input()
@@ -141,8 +145,9 @@ func handle_movement(delta: float):
 	move_and_slide()
 	if was_on_floor and !is_on_floor():
 		start_coyote_timer()
-	if !was_on_floor and is_on_floor():
+	if !was_on_floor and is_on_floor() and GameManager.upgraded:
 		current_animation_state = AnimationStates.Idle
+		can_attack = true
 
 
 func start_coyote_timer():
@@ -210,8 +215,8 @@ func handle_animations():
 			current_animation_state = AnimationStates.Idle
 		elif velocity.x != 0:
 			current_animation_state = AnimationStates.Running
-	else:
-		if velocity.y > 0:
+	elif current_animation_state != AnimationStates.Attack2:
+		if velocity.y >= 0:
 			current_animation_state = AnimationStates.Descending
 		else:
 			current_animation_state = AnimationStates.Ascending
@@ -243,6 +248,7 @@ func upgrade_sword():
 	is_dashing = false
 	can_change_animations = false
 	current_animation_state = AnimationStates.Upgrading
+	print("upgrading")
 	upgrade_sfx.play()
 
 
@@ -257,6 +263,7 @@ func start_dashing():
 	# pre dash
 	#can_move = false
 	dash_sfx.play()
+	invulnerable = true
 	
 	set_collision_mask_value(3, false)
 	handle_dash_cooldown()
@@ -269,8 +276,26 @@ func start_dashing():
 	
 	# post dash
 	Engine.physics_ticks_per_second = 60
+	invulnerable = false
 	set_collision_mask_value(3, true)
 	is_dashing = false
+
+
+func start_attack_1():
+	can_move = false
+	can_change_animations = false
+	current_animation_state = AnimationStates.Attack1
+	create_scene_at_pos(ATTACK_1, Vector2(position.x, position.y - 33))
+	attack_1_collision.disabled = false
+
+
+func start_attack_2():
+	can_attack = false
+	can_move = false
+	second_attack_buffered = false
+	attack_2_collision.disabled = false
+	current_animation_state = AnimationStates.Attack2
+	create_scene_at_pos(ATTACK_2, Vector2(position.x, position.y - 33))
 
 
 func handle_dash_cooldown():
@@ -313,19 +338,18 @@ func take_knockback(knockback_direction: Vector2, knockback_strength: float):
 func take_damage(damage_taken: int, knockback_direction: Vector2, knockback_strength: float):
 	if invulnerable:
 		return
-	
+	hp -= damage_taken
 	healthbar.health -= damage_taken
 	
 	grace_period()
-	super(damage_taken, knockback_direction, knockback_strength)
+	take_knockback(knockback_direction, knockback_strength)
+	damage_taken_sfx.play()
 
 
-func die():
-	super()	
-	
+func die():	
 	can_move = false
 	Engine.time_scale = 0.3
-	await get_tree().create_timer(0.3).timeout
+	await get_tree().create_timer(0.5).timeout
 	Engine.time_scale = 1
 	
 	can_move = true
@@ -335,7 +359,7 @@ func die():
 func _on_animated_sprite_2d_animation_finished():
 	if current_animation_state == AnimationStates.Upgrading:
 		current_animation_state = AnimationStates.Idle
-		upgraded = true
+		GameManager.upgraded = true
 		can_move = true
 		can_dash = true
 		can_attack = true
@@ -345,11 +369,7 @@ func _on_animated_sprite_2d_animation_finished():
 		attack_1_collision.disabled = true
 		
 		if second_attack_buffered:
-			can_move = false
-			second_attack_buffered = false
-			attack_2_collision.disabled = false
-			current_animation_state = AnimationStates.Attack2
-			create_scene_at_pos(ATTACK_2, Vector2(position.x, position.y - 33))
+			start_attack_2()
 		
 		else:
 			current_animation_state = AnimationStates.Idle
@@ -361,24 +381,28 @@ func _on_animated_sprite_2d_animation_finished():
 		current_animation_state = AnimationStates.Idle
 		attack_2_collision.disabled = true
 		can_move = true
-		can_attack = true
+		if is_on_floor():
+			can_attack = true
 		can_change_animations = true
 
 
 func _on_attack_1_area_body_entered(body):
 	create_scene_at_pos(HIT_PARTICLES, Vector2(body.position.x, body.position.y -15))
+	damage_dealt_sfx.pitch_scale = randf_range(0.8, 1.2)
+	damage_dealt_sfx.play()
 	if body.is_in_group("Enemy"):
-		body.take_damage(0, Vector2.ZERO, 0)
+		body.take_damage(attack_1_damage, position - body.position, attack_1_knockback)
 
 
 func _on_attack_2_area_body_entered(body):
 	create_scene_at_pos(HIT_PARTICLES, Vector2(body.position.x, body.position.y -15))
+	damage_dealt_sfx.pitch_scale = randf_range(0.8, 1.2)
+	damage_dealt_sfx.play()
 	if body.is_in_group("Enemy"):
-		body.take_damage(0, Vector2.ZERO, 0)
+		body.take_damage(attack_2_damage, position - body.position, attack_2_knockback)
 
 
 func create_scene_at_pos(scene: PackedScene, position: Vector2):
-	print("Spawning ", scene, " at ", position)
 	var sc = scene.instantiate()
 	get_parent().add_child(sc)
 	sc.global_position = position

@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://codicqyf1siu0"]
+[gd_scene load_steps=69 format=3 uid="uid://codicqyf1siu0"]
 
 [ext_resource type="Texture2D" uid="uid://djylf2al5j2n1" path="res://Assets/Sprites/Player.png" id="1_jh23f"]
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_xxa2e"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c02x5fh0gkoxc" path="res://Assets/Sprites/Sword Upgrade.png" id="5_6vegr"]
 [ext_resource type="AudioStream" uid="uid://2v0u4a7ffdr1" path="res://Assets/SFX/Dash SFX.wav" id="5_rj68k"]
 [ext_resource type="AudioStream" uid="uid://dn4xal1uk2ytb" path="res://Assets/SFX/Jump SFX.wav" id="6_ftdww"]
+[ext_resource type="AudioStream" uid="uid://b5jbapjot6txi" path="res://Assets/SFX/Player Hit Connect SFX.wav" id="7_70hwb"]
 [ext_resource type="AudioStream" uid="uid://ck8luy3xnb1xe" path="res://Assets/SFX/Footstep SFX.wav" id="7_h1re3"]
 [ext_resource type="AudioStream" uid="uid://oc1uded4u5jc" path="res://Assets/SFX/Damage Taken SFX.wav" id="8_8vllo"]
 [ext_resource type="AudioStream" uid="uid://x76o1f4q377u" path="res://Assets/SFX/upgrade.wav" id="9_ac8o1"]
@@ -422,20 +423,22 @@ height = 46.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_p4vkp"]
 radius = 28.5044
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("attack_1_collision", "attack_2_collision", "dash_sfx", "jump_sfx", "upgrade_sfx", "footstep_sfx", "footstep_timer", "collision_shape", "death_animation", "damage_taken_sfx")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("attack_1_collision", "attack_2_collision", "dash_sfx", "jump_sfx", "upgrade_sfx", "footstep_sfx", "damage_dealt_sfx", "footstep_timer", "death_animation", "damage_taken_sfx") groups=["Player"]]
 collision_layer = 512
 collision_mask = 524295
 script = ExtResource("1_xxa2e")
 run_speed = 250.0
 dash_duration = 0.1
+attack_1_damage = 15.0
+attack_2_damage = 25.0
 attack_1_collision = NodePath("Flippables/Attack1 Area/Attack1 Collision")
 attack_2_collision = NodePath("Flippables/Attack2 Area/Attack2 Collision")
 dash_sfx = NodePath("SFX/Dash SFX")
 jump_sfx = NodePath("SFX/Jump SFX")
 upgrade_sfx = NodePath("SFX/Upgrade SFX")
 footstep_sfx = NodePath("SFX/Footstep SFX")
+damage_dealt_sfx = NodePath("SFX/Damage Dealt")
 footstep_timer = NodePath("SFX/Footstep Timer")
-collision_shape = NodePath("CollisionShape2D")
 death_animation = NodePath("Flippables/AnimatedSprite2D")
 damage_taken_sfx = NodePath("SFX/Damage Taken SFX")
 
@@ -443,7 +446,7 @@ damage_taken_sfx = NodePath("SFX/Damage Taken SFX")
 position = Vector2(0, -14)
 shape = SubResource("CapsuleShape2D_pfd7l")
 
-[node name="SFX" type="Node" parent="."]
+[node name="SFX" type="Node2D" parent="."]
 
 [node name="Dash SFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("5_rj68k")
@@ -462,7 +465,7 @@ bus = &"SFX"
 
 [node name="Upgrade SFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("9_ac8o1")
-max_polyphony = 2
+max_polyphony = 3
 bus = &"SFX"
 
 [node name="Damage Taken SFX" type="AudioStreamPlayer2D" parent="SFX"]
@@ -473,6 +476,11 @@ bus = &"SFX"
 [node name="Footstep Timer" type="Timer" parent="SFX"]
 wait_time = 0.4
 one_shot = true
+
+[node name="Damage Dealt" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("7_70hwb")
+max_polyphony = 3
+bus = &"SFX"
 
 [node name="Flippables" type="Node2D" parent="."]
 
@@ -499,6 +507,9 @@ collision_mask = 4
 position = Vector2(15, -28)
 shape = SubResource("CircleShape2D_p4vkp")
 disabled = true
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+current = true
 
 [connection signal="animation_finished" from="Flippables/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="Flippables/Attack1 Area" to="." method="_on_attack_1_area_body_entered"]

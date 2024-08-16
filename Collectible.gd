@@ -5,6 +5,14 @@ extends Area2D
 
 var upgraded := false
 
+
+func _ready():
+	upgraded = GameManager.upgraded
+	if upgraded:
+		$AudioStreamPlayer2D.playing = false
+		$CPUParticles2D.emitting = false
+		timer.stop()
+
 func _on_body_entered(body):
 	if upgraded:
 		return

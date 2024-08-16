@@ -14,7 +14,7 @@ func _ready():
 
 
 func choose_next_music():
-	var next_in_line = night_ambients[randi_range(0, 1)]
+	var next_in_line = night_ambients[randi_range(0, 2)]
 	await get_tree().create_timer(randf_range(3, 15)).timeout
 	next_in_line.play()
 
